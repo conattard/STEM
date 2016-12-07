@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#ECECEC"
+              android:weightSum="1">
+
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Share to "
+                android:textColor="@android:color/white"
+                android:fontFamily="Roboto"
+                android:textSize="20sp"
+                style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                android:layout_gravity="start"
+                />
+
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5sp"
+                android:textColorHint="#05ab9a"
+                app:met_floatingLabel="normal"
+                app:met_baseColor="@color/white"
+                app:background="@android:color/transparent"/>
+    </android.support.v7.widget.Toolbar>
+
+    <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="30dp">
+
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="100 Pieces of Cardboard!"
+                android:layout_marginStart="50sp"
+                android:layout_marginEnd="50sp"
+                android:layout_marginTop="50sp"
+                android:textSize="16sp"
+                android:background="@android:color/transparent"
+                android:id="@+id/textView"
+                android:textCursorDrawable="@null"
+                />
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
