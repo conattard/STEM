@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_user_area"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="stem.cis3086.uom.stem.UserAreaActivity">
+
+    <TextView
+        android:text="Sign Up Complete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvComplete"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/etName"
+        android:hint="Name"
+        android:layout_below="@+id/tvComplete"
+        android:layout_alignRight="@+id/tvComplete"
+        android:layout_alignEnd="@+id/tvComplete"
+        android:layout_toRightOf="@+id/tvWelcomeMsg"
+        android:layout_toEndOf="@+id/tvWelcomeMsg" />
+
+    <TextView
+        android:text="Welcome, "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvWelcomeMsg"
+        android:layout_alignBaseline="@+id/etName"
+        android:layout_alignBottom="@+id/etName"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Continue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etName"
+        android:layout_toLeftOf="@+id/etName"
+        android:layout_toStartOf="@+id/etName"
+        android:layout_marginTop="23dp"
+        android:id="@+id/bContinue" />
+
+</RelativeLayout>
