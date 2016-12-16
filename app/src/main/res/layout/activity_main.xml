@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.yranriahi.loginregister.MainActivity">
+    tools:context="stem.cis3086.uom.stem.MainActivity">
 
     <Button
         android:text="Sign Up"
@@ -49,12 +49,12 @@
         android:layout_alignLeft="@+id/tvMsg"
         android:layout_alignStart="@+id/tvMsg" />
 
-    <Button
-        android:text="Google Sign Up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/bGoogle"
-        android:layout_above="@+id/bSignUp"
-        android:layout_alignLeft="@+id/bFacebook"
-        android:layout_alignStart="@+id/bFacebook" />
+    <com.google.android.gms.common.SignInButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/bGoogle"
+            android:layout_above="@+id/bSignUp"
+            android:layout_alignLeft="@+id/bFacebook"
+            android:layout_alignStart="@+id/bFacebook"/>
+
 </RelativeLayout>
