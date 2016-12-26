@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="stem.cis3086.uom.stem.UserAreaActivity">
+    tools:context="com.yranriahi.loginregister.UserAreaActivity">
 
     <TextView
         android:text="Sign Up Complete"
@@ -19,6 +19,26 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
+    <TextView
+        android:text="Welcome, "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvWelcomeMsg"
+        android:layout_alignBaseline="@+id/etName"
+        android:layout_alignBottom="@+id/etName"
+        android:layout_alignLeft="@+id/tvComplete"
+        android:layout_alignStart="@+id/tvComplete" />
+
+    <Button
+        android:text="Continue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:id="@+id/bContinue"
+        android:layout_below="@+id/etName"
+        android:layout_centerHorizontal="true"
+        android:background="#388AFF" />
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,28 +47,7 @@
         android:id="@+id/etName"
         android:hint="Name"
         android:layout_below="@+id/tvComplete"
-        android:layout_alignRight="@+id/tvComplete"
-        android:layout_alignEnd="@+id/tvComplete"
         android:layout_toRightOf="@+id/tvWelcomeMsg"
         android:layout_toEndOf="@+id/tvWelcomeMsg" />
-
-    <TextView
-        android:text="Welcome, "
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvWelcomeMsg"
-        android:layout_alignBaseline="@+id/etName"
-        android:layout_alignBottom="@+id/etName"
-        android:layout_centerHorizontal="true" />
-
-    <Button
-        android:text="Continue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etName"
-        android:layout_toLeftOf="@+id/etName"
-        android:layout_toStartOf="@+id/etName"
-        android:layout_marginTop="23dp"
-        android:id="@+id/bContinue" />
 
 </RelativeLayout>
