@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1067539947100",
+    "project_id": "firebase-stem"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1067539947100:android:3fe1f233f723a660",
+        "android_client_info": {
+          "package_name": "stem.cis3086.uom.stem"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1067539947100-7m1uglt3vk97prb2186okojkf0mt6ieu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvLdPzAS9WNJzM9z0eK3YdhnHWAHRF7N0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
