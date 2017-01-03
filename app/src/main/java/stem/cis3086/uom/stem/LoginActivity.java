@@ -1,6 +1,7 @@
 package stem.cis3086.uom.stem;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -18,8 +20,17 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 public class LoginActivity extends AppCompatActivity
 {
+    private String url = "http://stemapp.azurewebsites.net/Account/CheckPassword?username=";
+    private boolean isSuccessful = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,54 +66,8 @@ public class LoginActivity extends AppCompatActivity
                 final String username = etUsername.getText().toString();
                 final String password = etPassword.getText().toString();
 
-                Response.Listener<String> responseListener = new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response)
-                    {
-                        try
-                        {
-                            JSONObject jsonResponse = new JSONObject(response);
-
-                            boolean success = jsonResponse.getBoolean("success");
-
-                            if(success)
-                            {
-                                String name = jsonResponse.getString("name");
-                                //int age = jsonResponse.getInt("age");
-
-
-                                Intent Intent = new Intent(LoginActivity.this, UserAreaActivity.class);
-                                Intent.putExtra("name", name);
-                                Intent.putExtra("username", username);
-                                //Intent.putExtra("age", age);
-
-                                LoginActivity.this.startActivity(Intent);
-                            }
-                            else
-                            {
-                                Intent intent = new Intent(LoginActivity.this, ErrorActivity.class);
-
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("Register Failed")
-                                        .setNegativeButton("Retry", null)
-                                        .create()
-                                        .show();
-
-                                LoginActivity.this.startActivity(intent);
-                            }
-                        }
-                        catch (JSONException e)
-                        {
-                            e.printStackTrace();
-                        }
-
-                    }
-                };
-
-                LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-                queue.add(loginRequest);
+                url = url + username + "&password=" + password;
+                new LoginActivity.sendJsonData().execute();
             }
         });
 
@@ -124,5 +89,63 @@ public class LoginActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         return true;
+    }
+
+    protected class sendJsonData extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            RegisterActivity.ServiceHandler serviceHandler = new RegisterActivity.ServiceHandler();
+
+            String jsonString = serviceHandler.makeServiceCall(url);
+            if (jsonString.equals("\"True\"")){
+                isSuccessful = true;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (isSuccessful){
+                Toast.makeText(getApplicationContext(), "Login successful", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(), ShareActivity.class);
+                startActivity(intent);
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Login Unsuccessful", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public static class ServiceHandler{
+        public ServiceHandler(){}
+
+        public String makeServiceCall(String url){
+            return this.request(url);
+        }
+
+        public String request(String urlString){
+            StringBuffer chain = new StringBuffer("");
+            try{
+                URL url = new URL(urlString);
+                HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+                connection.setRequestProperty("User-Agent", " ");
+                connection.setRequestMethod("GET");
+                connection.connect();
+
+                InputStream inputStream = connection.getInputStream();
+
+                BufferedReader rd  = new BufferedReader(new InputStreamReader(inputStream));
+                String line = "";
+                while((line = rd.readLine()) != null){
+                    chain.append(line);
+                }
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+            return chain.toString();
+        }
+
     }
 }

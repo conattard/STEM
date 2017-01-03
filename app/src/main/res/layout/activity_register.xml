@@ -30,7 +30,8 @@
 
         android:id="@+id/bRegister"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:background="#388AFF" />
 
     <TextView
         android:text="Personal Details"
@@ -72,19 +73,6 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:id="@+id/etDOB"
-        android:layout_below="@+id/etSurname"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:hint="Date Of Birth" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:ems="10"
         android:id="@+id/etEmail"
         android:hint="Email Address"
@@ -103,8 +91,42 @@
         android:textSize="18sp"
         android:textStyle="normal|bold"
         android:layout_marginTop="40dp"
-        android:layout_below="@+id/etDOB"
+        android:layout_below="@+id/subject"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        />
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/minAge"
+            android:layout_below="@+id/etSurname"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:hint="Minimum Student's Age"/>
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/maxAge"
+            android:layout_below="@+id/minAge"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:hint="Maximum Student's Age"/>
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/subject"
+            android:layout_below="@+id/maxAge"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:hint="Subject"/>
 
 </RelativeLayout>
