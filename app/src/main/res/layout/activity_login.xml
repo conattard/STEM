@@ -23,34 +23,37 @@
         android:layout_alignParentEnd="true"
         android:inputType="textPassword" />
 
+    <TextView
+        android:text="Welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvWelcome"
+        android:textSize="24sp"
+        android:textStyle="normal|bold"
+        android:layout_marginTop="147dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/bRegister"
+        android:layout_toStartOf="@+id/bRegister" />
+
     <Button
         android:text="Sign In"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/bRegister"
+        android:background="#388AFF"
         android:layout_below="@+id/etPassword"
         android:layout_centerHorizontal="true" />
 
     <TextView
-        android:text="Register Here"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvRegisterHere"
-        android:layout_marginTop="20dp"
-        android:layout_below="@+id/bRegister"
-        android:layout_alignRight="@+id/bRegister"
-        android:layout_alignEnd="@+id/bRegister"
-        android:layout_alignLeft="@+id/bRegister"
-        android:layout_alignStart="@+id/bRegister" />
-
-    <TextView
-        android:text="Welcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/tvWelcome"
-        android:textSize="24sp"
-        android:textStyle="normal|bold" />
+            android:text="Register Here"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvRegisterHere"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/bRegister"
+            android:layout_alignRight="@+id/bRegister"
+            android:layout_alignEnd="@+id/bRegister"
+            android:layout_alignLeft="@+id/bRegister"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -59,8 +62,7 @@
         android:ems="10"
         android:id="@+id/etEmail"
         android:hint="Email Address"
-        android:layout_marginTop="38dp"
-        android:layout_below="@+id/tvWelcome"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"

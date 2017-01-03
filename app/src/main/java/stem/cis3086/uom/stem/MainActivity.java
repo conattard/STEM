@@ -10,30 +10,51 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
+
+import android.telecom.Call;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+
 
 public class MainActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener
 {
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
 
+    private CallbackManager callbackManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
 
         final SignInButton bGoogle = (SignInButton) findViewById(R.id.bGoogle);
         bGoogle.setSize(SignInButton.SIZE_STANDARD);
-        final Button bFacebook = (Button) findViewById(R.id.bFacebook);
         final Button bSignUp = (Button) findViewById(R.id.bSignUp);
 
         final TextView loginLink = (TextView) findViewById(R.id.tvSignIn);
@@ -53,7 +74,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             @Override
             public void onClick(View v)
             {
-                Intent signupIntent = new Intent(MainActivity.this, ChoiceActivity.class);
+                Intent signupIntent = new Intent(MainActivity.this, RegisterActivity.class);
                 MainActivity.this.startActivity(signupIntent);
             }
         });
@@ -65,6 +86,27 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             }
         });
 
+
+        callbackManager = CallbackManager.Factory.create();
+        LoginButton bFacebook = (LoginButton) findViewById(R.id.bFacebook);
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+        LoginManager.getInstance().logInWithPublishPermissions(
+                this,
+                Arrays.asList("publish_actions"));
+        bFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.v(TAG,"Login Successful");
+            }
+
+            @Override
+            public void onCancel() {}
+
+            @Override
+            public void onError(FacebookException error) {
+                Log.d(TAG,error.toString());
+            }
+        });
     }
 
     @Override
@@ -74,6 +116,11 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
+        }else{
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+            Intent intent = new Intent(this, ShareActivity.class);
+            intent.putExtra("Facebook Account", data);
+            startActivity(intent);
         }
     }
 
