@@ -15,32 +15,6 @@ public class ChoiceActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choice);
-
-        final TextView tvParent = (TextView) findViewById(R.id.tvParent);
-        final TextView tvTeacher = (TextView) findViewById(R.id.tvTeacher);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        final Intent registerIntent = new Intent(ChoiceActivity.this, RegisterActivity.class);
-
-        tvTeacher.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                ChoiceActivity.this.startActivity(registerIntent);
-            }
-        });
-
-        tvParent.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                ChoiceActivity.this.startActivity(registerIntent);
-            }
-        });
     }
 
     @Override

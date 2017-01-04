@@ -10,10 +10,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -23,6 +26,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -33,7 +37,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -45,6 +59,15 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
     private static final int RC_SIGN_IN = 9001;
 
     private CallbackManager callbackManager;
+    private String email = "";
+    private String urlString = "";
+    private boolean isGoogle = false;
+    private boolean isFacebook= false;
+    private boolean isRegistered = false;
+    private GoogleSignInAccount acct;
+    private Intent data;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,6 +75,8 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_main);
+
+
 
         final SignInButton bGoogle = (SignInButton) findViewById(R.id.bGoogle);
         bGoogle.setSize(SignInButton.SIZE_STANDARD);
@@ -87,15 +112,42 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         });
 
 
+        LoginButton bFacebook = (LoginButton) findViewById(R.id.bFacebook);
+        if(AccessToken.getCurrentAccessToken() != null) {
+            LoginManager.getInstance().logOut();
+        }
+        bFacebook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginToFacebook();
+            }
+        });
+
+    }
+
+    private void loginToFacebook(){
         callbackManager = CallbackManager.Factory.create();
         LoginButton bFacebook = (LoginButton) findViewById(R.id.bFacebook);
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "email"));
         LoginManager.getInstance().logInWithPublishPermissions(
                 this,
                 Arrays.asList("publish_actions"));
         bFacebook.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                try {
+                                    email = object.getString("email");
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        });
                 Log.v(TAG,"Login Successful");
             }
 
@@ -108,7 +160,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             }
         });
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -118,26 +169,17 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             handleSignInResult(result);
         }else{
             callbackManager.onActivityResult(requestCode, resultCode, data);
-            Intent intent = new Intent(this, ShareActivity.class);
-            intent.putExtra("Facebook Account", data);
-            startActivity(intent);
+            this.data = data;
+            Bundle bundle = data.getExtras();
+            urlString = "http://stemapp.azurewebsites.net/Account/CheckPassword?username=" + email + "&password=123";
+            isFacebook = true;
+            new sendJsonData().execute();
         }
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
-    }
-
-    private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            // Signed in successfully.
-            GoogleSignInAccount acct = result.getSignInAccount();
-            Intent intent = new Intent(this, ShareActivity.class);
-            intent.putExtra("Google Account", acct);
-            startActivity(intent);
-        }
     }
 
     private void googleSignIn() {
@@ -173,4 +215,97 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             startActivityForResult(signInIntent, RC_SIGN_IN);
         }
     }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully.
+            acct = result.getSignInAccount();
+            email = acct.getEmail();
+            urlString = "http://stemapp.azurewebsites.net/Account/CheckPassword?username=" + email + "&password=123";
+            isGoogle = true;
+            new sendJsonData().execute();
+        }
+    }
+
+    protected class sendJsonData extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            MainActivity.ServiceHandler serviceHandler = new MainActivity.ServiceHandler();
+            isRegistered = serviceHandler.makeServiceCall(urlString);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(isGoogle){
+                if(isRegistered){
+                    Intent intent = new Intent(getApplicationContext(), ShareActivity.class);
+                    intent.putExtra("Google Account", acct);
+                    intent.putExtra("email", email);
+                    startActivity(intent);
+                }
+                else{
+                    Intent intent = new Intent(getApplicationContext(),RegisterRequest.class);
+                    intent.putExtra("Google Account", acct);
+                    intent.putExtra("email", email);
+                    startActivity(intent);
+                }
+            }
+            else if (isFacebook){
+                if(isRegistered){
+                    Intent intent = new Intent(getApplicationContext(), ShareActivity.class);
+                    intent.putExtra("Facebook Account", data);
+                    intent.putExtra("email", email);
+                    startActivity(intent);
+                }
+                else {
+                    Intent intent = new Intent(getApplicationContext(), RegisterRequest.class);
+                    intent.putExtra("Facebook Account", data);
+                    intent.putExtra("email", email);
+                    startActivity(intent);
+                }
+            }
+        }
+    }
+
+    public static class ServiceHandler{
+        public ServiceHandler(){}
+
+        public boolean makeServiceCall(String url){
+            return this.isEmailAlreadyRegistered(url);
+        }
+
+        private boolean isEmailAlreadyRegistered(String urlString){
+            StringBuffer chain = new StringBuffer("");
+            try{
+                URL url = new URL(urlString);
+                HttpURLConnection connection = (HttpURLConnection)url.openConnection();
+                connection.setRequestProperty("User-Agent", " ");
+                connection.setRequestMethod("GET");
+                connection.connect();
+
+                InputStream inputStream = connection.getInputStream();
+
+                BufferedReader rd  = new BufferedReader(new InputStreamReader(inputStream));
+                String line = "";
+                while((line = rd.readLine()) != null){
+                    chain.append(line);
+                }
+            } catch (IOException e){
+                e.printStackTrace();
+            }
+            if(chain.toString().equals("\"False\"")){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+
+    }
+
+
 }

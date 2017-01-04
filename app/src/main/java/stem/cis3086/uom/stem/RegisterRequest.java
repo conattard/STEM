@@ -1,7 +1,16 @@
 package stem.cis3086.uom.stem;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,25 +19,29 @@ import java.util.Map;
  * Created by YranRiahi on 30/11/2016.
  */
 
-public class RegisterRequest extends StringRequest
+public class RegisterRequest extends AppCompatActivity
 {
-    private static final String REGISTER_REQUEST_URL = "https://florescent-boys.000webhostapp.com/Register.php";
-    private Map<String, String> params;
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_choice);
 
-    public RegisterRequest(String name, String username, String password, Response.Listener<String> listener)
-    {
-        super(Method.POST, REGISTER_REQUEST_URL, listener, null);
-
-        params = new HashMap<>();
-        params.put("name", name);
-        params.put("username", username);
-        params.put("password", password);
-
+        Button submitBtn = (Button) findViewById(R.id.submit);
+        submitBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ShareActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     @Override
-    public Map<String, String> getParams()
-    {
-        return params;
+    protected void onStop() {
+        super.onStop();
+        if(AccessToken.getCurrentAccessToken() != null) {
+            LoginManager.getInstance().logOut();
+        }
     }
 }

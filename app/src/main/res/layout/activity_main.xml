@@ -26,32 +26,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#FFFFFF"
+        android:textSize="18sp"
         android:id="@+id/tvSignIn"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 
     <com.google.android.gms.common.SignInButton
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/bGoogle"
             android:layout_marginBottom="12dp"
             android:layout_above="@+id/bSignUp"
-            android:layout_alignStart="@+id/bFacebook"
-            android:layout_alignEnd="@+id/bFacebook"/>
-
-    <com.facebook.login.widget.LoginButton
-            android:id="@+id/bFacebook"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_above="@+id/bGoogle"
-            android:layout_centerHorizontal="true"/>
+            android:layout_alignEnd="@+id/bFacebook"
+            android:layout_alignStart="@+id/bFacebook"/>
 
     <Button
         android:text="Sign Up By Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#000FFF"
+        android:background="#0b7dda"
         android:id="@+id/bSignUp"
         android:layout_above="@+id/tvMsg"
         android:layout_alignLeft="@+id/bGoogle"
@@ -59,7 +52,8 @@
         android:layout_marginBottom="15dp"
         android:layout_alignRight="@+id/bGoogle"
         android:layout_alignEnd="@+id/bGoogle"
-        android:elevation="0dp" />
+        android:elevation="0dp"
+        style="@style/Widget.AppCompat.Button.Colored"/>
 
     <TextView
         android:text="STEM"
@@ -72,4 +66,12 @@
         android:layout_centerHorizontal="true"
         android:textColor="@android:color/white"
         android:textStyle="normal|bold" />
+
+    <com.facebook.login.widget.LoginButton
+            android:id="@+id/bFacebook"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_width="175sp"
+            android:layout_above="@+id/bGoogle"
+            android:layout_centerHorizontal="true"/>
 </RelativeLayout>

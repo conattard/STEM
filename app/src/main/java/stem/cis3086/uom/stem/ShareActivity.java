@@ -1,5 +1,7 @@
 package stem.cis3086.uom.stem;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -35,7 +37,6 @@ import com.facebook.share.model.ShareOpenGraphContent;
 import com.facebook.share.model.ShareOpenGraphObject;
 import com.facebook.share.widget.ShareDialog;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
-
 
 /**
  * Created by SterlingRyan on 06/12/2016.
@@ -103,15 +104,13 @@ public class ShareActivity extends AppCompatActivity {
 
     //Sends a post to the social platform selected
     private void sendPost(){
-//        Bundle extras = getIntent().getExtras();
-//        String resourcesType = extras.getString("resourcesType");
-//        Float latitude = extras.getFloat("latitude");
-//        Float longitude = extras.getFloat("longitude");
+        Bundle extras = getIntent().getExtras();
         switch (spinner.getText().toString()){
             case "Facebook":
-                postOnFacebook("STEM Test", Float.valueOf((float) 35.890030), Float.valueOf((float) 14.431138));
+                postOnFacebook(extras.getString("resourcesType"), Float.valueOf(extras.getFloat("latitude")), Float.valueOf(extras.getFloat("longitude")));
                 break;
             case "Google+":
+                postOnGoogle(extras.getString("resourcesType"), Float.valueOf(extras.getFloat("latitude")), Float.valueOf(extras.getFloat("longitude")));
                 break;
             case "Twitter":
                 break;
@@ -129,5 +128,15 @@ public class ShareActivity extends AppCompatActivity {
 
         ShareApi.share(content, null);
         Toast.makeText(this, "Post Successful",Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void postOnGoogle(String resourcesType , Float latitude, Float longitude){
+//        Intent shareIntent = new GoogleApiClient.Builder(this)
+//                .setText(resourcesType)
+//                .setContentUrl(Uri.parse("http://maps.google.com/?q="+ latitude.toString() +"," + longitude.toString()))
+//                .getIntent();
+//
+//        startActivityForResult(shareIntent, 0);
     }
 }
