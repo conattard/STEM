@@ -1,8 +1,14 @@
 package stem.cis3086.uom.stem.fragments;
 
 
+import android.Manifest;
+import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.Image;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,18 +18,34 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.DialogOnDeniedPermissionListener;
+import com.karumi.dexter.listener.single.EmptyPermissionListener;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import stem.cis3086.uom.stem.LessonDetailActivity;
 import stem.cis3086.uom.stem.R;
+import stem.cis3086.uom.stem.ResourceSourcesActivity;
 
-public class ResourcesFragment extends Fragment {
+public class ResourcesFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String ARG_ID = "argId";
     private String lessonId;
+    private GoogleApiClient googleApiClient;
+    private Location currentLocation;
 
     private RecyclerView recyclerView;
 
@@ -45,6 +67,14 @@ public class ResourcesFragment extends Fragment {
         if (getArguments() != null) {
             lessonId = getArguments().getString(ARG_ID);
         }
+
+
+        // Connect to Google API client
+        googleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(ResourcesFragment.this)
+                .addOnConnectionFailedListener(ResourcesFragment.this)
+                .addApi(LocationServices.API)
+                .build();
     }
 
     @Override
@@ -54,6 +84,7 @@ public class ResourcesFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_resources, container, false);
 
         findViews(rootView);
+        getGpsLocation();
         getData();
 
         return rootView;
@@ -84,6 +115,70 @@ public class ResourcesFragment extends Fragment {
                 });
     }
 
+    private void getGpsLocation(){
+        Dexter.withActivity(getActivity())
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener(){
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        // Get last known gps locations
+                        currentLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+                    }
+
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        // Show dialog
+                        new MaterialDialog.Builder(getActivity())
+                                .title("Permission denied")
+                                .content("GPS permission is required to show nearest resources.")
+                                .positiveText("Continue")
+                                .build()
+                                .show();
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, final PermissionToken token) {
+                        // Show dialog
+                        new MaterialDialog.Builder(getActivity())
+                                .title("GPS permission")
+                                .content("GPS permission is required to show nearest resources.")
+                                .positiveText("Grant Permission")
+                                .negativeText("Ignore")
+                                .callback(new MaterialDialog.ButtonCallback() {
+                                    @Override
+                                    public void onPositive(MaterialDialog dialog) {
+                                        super.onPositive(dialog);
+                                        token.continuePermissionRequest();
+                                    }
+
+                                    @Override
+                                    public void onNegative(MaterialDialog dialog) {
+                                        super.onNegative(dialog);
+                                        token.cancelPermissionRequest();
+                                    }
+                                })
+                                .build()
+                                .show();
+                    }
+                });
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        // Ask for permission and get location
+        getGpsLocation();
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
     private class ResourcesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         private JsonArray resourcesJsonArray;
@@ -111,6 +206,8 @@ public class ResourcesFragment extends Fragment {
 
         private class ResourceViewHolder extends RecyclerView.ViewHolder{
 
+            private String resourceId = null;
+
             private TextView titleTextView;
             private TextView isStudentTextView;
             private TextView submissionCountTextView;
@@ -119,7 +216,7 @@ public class ResourcesFragment extends Fragment {
             private ImageView mapImageView;
 
 
-            public ResourceViewHolder(View itemView) {
+            private ResourceViewHolder(View itemView) {
                 super(itemView);
 
                 titleTextView = (TextView) itemView.findViewById(R.id.resourceItemTitle);
@@ -128,25 +225,39 @@ public class ResourcesFragment extends Fragment {
                 nearestLocationButtonTextView  = (TextView) itemView.findViewById(R.id.resourceItemNearestLocation);
                 allSubmissionsButtonTextView = (TextView) itemView.findViewById(R.id.resourceItemAllSubmissions);
                 mapImageView = (ImageView) itemView.findViewById(R.id.resourceItemMapView);
+
+                // Set click handler
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (resourceId != null) {
+                            Intent intent = new Intent(getActivity(), ResourceSourcesActivity.class);
+                            startActivity(intent);
+                        }
+                    }
+                });
             }
 
-            public void bind(JsonObject resource){
+            private void bind(JsonObject resource){
+                resourceId = String.valueOf(resource.get("Id").getAsInt());
+
                 // Set data
                 JsonArray resourceSources = resource.getAsJsonArray("ResourceSources");
-
                 titleTextView.setText(resource.get("Name").getAsString());
                 isStudentTextView.setText(resource.get("IsStudentResource").getAsBoolean() ? "Student Resource" : "Educator Resource");
                 submissionCountTextView.setText(resourceSources.size() == 1 ? resourceSources.size() + " submission" : resourceSources.size() + " submissions");
 
                 if (resourceSources.size() == 0){
+                    // Update view to reflect no sources
                     allSubmissionsButtonTextView.setVisibility(View.GONE);
                     nearestLocationButtonTextView.setText("Submit resource");
-
                     mapImageView.setImageResource(R.drawable.no_resources_error);
                 } else  {
+                    // Update buttons
                     allSubmissionsButtonTextView.setVisibility(View.VISIBLE);
                     nearestLocationButtonTextView.setText("Nearest location");
 
+                    // Load map for nearest resource using Static Maps API
                     JsonObject nearestResource = getNearestResource(resourceSources);
                     double latitude = nearestResource.get("sourceLatitude").getAsDouble();
                     double longitude = nearestResource.get("sourceLongitude").getAsDouble();
@@ -182,9 +293,21 @@ public class ResourcesFragment extends Fragment {
                 return  nearest;
             }
 
-            private float distanceToResource(JsonObject resource){
-                // TODO: Calculate distance to resource
-                return 0f;
+            private double distanceToResource(JsonObject resource){
+                // Return if current location is not found
+                if (currentLocation == null){
+                    return Double.MAX_VALUE;
+                }
+
+                // Create resource location
+                double latitude = resource.get("sourceLatitude").getAsDouble();
+                double longitude = resource.get("sourceLongitude").getAsDouble();
+                Location resourceLocation = new Location(LocationManager.GPS_PROVIDER);
+                resourceLocation.setLatitude(latitude);
+                resourceLocation.setLongitude(longitude);
+
+                // Return distance
+                return currentLocation.distanceTo(resourceLocation);
             }
         }
     }

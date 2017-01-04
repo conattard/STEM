@@ -1,0 +1,155 @@
+package stem.cis3086.uom.stem;
+
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ResourceSourcesActivity extends AppCompatActivity {
+
+    public static final String EXTRA_RESOURCE_ID = "extraId";
+    private String resourceId;
+
+    private Toolbar toolbar;
+    private RecyclerView recyclerView;
+
+    public ResourceSourcesActivity() {
+        // Required empty public constructor
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Get id
+        if (getIntent().hasExtra(EXTRA_RESOURCE_ID)){
+            resourceId = getIntent().getStringExtra(EXTRA_RESOURCE_ID);
+        } else {
+            resourceId = "4";
+        }
+
+        findViews();
+        getData();
+
+    }
+
+    private void findViews() {
+        toolbar = (Toolbar) findViewById(R.id.resourceSourcesToolbar);
+        recyclerView = (RecyclerView) findViewById(R.id.resourceSourcesRecyclerView);
+    }
+
+    private void getData() {
+        String path = "http://stemapp.azurewebsites.net/Social/GetResourceById?id=" + resourceId;
+        Ion.with(this)
+                .load(path)
+                .asJsonArray()
+                .setCallback(new FutureCallback<JsonArray>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonArray result) {
+                        // Get lesson plan from array
+                        JsonObject resource = result.get(0).getAsJsonObject();
+
+                        // Get resources array
+                        JsonArray sourcesArray = resource.getAsJsonArray("ResourceSources");
+
+                        // Set title
+                        toolbar.setTitle(resource.get("Name").getAsString());
+
+                        // Setup recycler view
+                        recyclerView.setAdapter(new SourcesAdapter(sourcesArray));
+                        recyclerView.setLayoutManager(new LinearLayoutManager(ResourceSourcesActivity.this));
+                    }
+                });
+    }
+
+    private class SourcesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        private JsonArray sourcesJsonArray;
+
+        private SourcesAdapter(JsonArray resourcesJsonArray) {
+            this.sourcesJsonArray = resourcesJsonArray;
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            return new SourceViewHolder(LayoutInflater.from(ResourceSourcesActivity.this).inflate(R.layout.view_resource_item, parent, false));
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            if (holder instanceof SourceViewHolder) {
+                ((SourceViewHolder) holder).bind(sourcesJsonArray.get(position).getAsJsonObject());
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return sourcesJsonArray.size();
+        }
+
+        private class SourceViewHolder extends RecyclerView.ViewHolder {
+
+            private TextView nameTextView;
+            private TextView dateTextView;
+            private TextView descriptionTextView;
+            private TextView addressTextView;
+            private ImageView mapImageView;
+
+
+            private SourceViewHolder(View itemView) {
+                super(itemView);
+
+                nameTextView = (TextView) itemView.findViewById(R.id.resourceSourceName);
+                dateTextView = (TextView) itemView.findViewById(R.id.resourceSourceDate);
+                descriptionTextView = (TextView) itemView.findViewById(R.id.resourceSourceDescription);
+                addressTextView = (TextView) itemView.findViewById(R.id.resourceSourceAddress);
+                mapImageView = (ImageView) itemView.findViewById(R.id.resourceItemMapView);
+            }
+
+            private void bind(JsonObject source) {
+                // Get user data
+                nameTextView.setText("Tony Stark");
+                dateTextView.setText("1 day ago");
+                descriptionTextView.setText("€40");
+
+                // Load map for nearest resource using Static Maps API
+                double latitude = source.get("sourceLatitude").getAsDouble();
+                double longitude = source.get("sourceLongitude").getAsDouble();
+
+                StringBuilder stringBuilder = new StringBuilder("");
+
+                stringBuilder.append("https://maps.googleapis.com/maps/api/staticmap?center=");
+                stringBuilder.append(latitude);
+                stringBuilder.append(",");
+                stringBuilder.append(longitude);
+                stringBuilder.append("&zoom=12&markers=color:red%7Clabel:S%7C");
+                stringBuilder.append(latitude);
+                stringBuilder.append(",");
+                stringBuilder.append(longitude);
+                stringBuilder.append("&size=1000x500&key=AIzaSyBcI5WQUbu83dPwYLleKv9dur22-qkcHvI");
+
+                //"https://maps.googleapis.com/maps/api/staticmap?center=35.891746,14.442517&zoom=12&markers=color:red%7Clabel:S%7C35.891746,14.442517&size=1000x500&key=AIzaSyBcI5WQUbu83dPwYLleKv9dur22-qkcHvI";
+                Ion.with(mapImageView)
+                        .placeholder(R.drawable.loading_resources_placeholder)
+                        .error(R.drawable.no_resources_error)
+                        .load(stringBuilder.toString());
+            }
+        }
+    }
+}

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/cardBackground">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/resourceSourceName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_normal"
+        android:layout_marginRight="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:textStyle="bold"
+        style="@style/TextBody"/>
+
+    <!-- Date  -->
+    <TextView
+        android:id="@+id/resourceSourceDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_normal"
+        android:layout_marginRight="@dimen/spacing_normal"
+        android:layout_marginBottom="@dimen/spacing_normal"
+        style="@style/TextBody"/>
+
+    <!-- Google Static Map API image view -->
+    <ImageView
+        android:id="@+id/resourceSourceMapView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop" />
+
+    <!-- Bottom text -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/resourceSourceAddress"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:padding="@dimen/spacing_large"
+            style="@style/TextBody"/>
+
+        <TextView
+            android:id="@+id/resourceSourceDescription"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:padding="@dimen/spacing_large"
+            style="@style/TextBody"/>
+    </LinearLayout>
+</LinearLayout>
