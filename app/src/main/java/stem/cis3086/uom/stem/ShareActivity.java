@@ -112,8 +112,6 @@ public class ShareActivity extends AppCompatActivity {
             case "Google+":
                 postOnGoogle(extras.getString("resourcesType"), Float.valueOf(extras.getFloat("latitude")), Float.valueOf(extras.getFloat("longitude")));
                 break;
-            case "Twitter":
-                break;
             default: finish();
         }
     }
