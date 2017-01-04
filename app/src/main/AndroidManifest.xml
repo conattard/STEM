@@ -48,6 +48,7 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".ErrorActivity" />
         <activity android:name=".ChoiceActivity" />
+        <activity android:name=".RegisterRequest" />
     </application>
 
 </manifest>

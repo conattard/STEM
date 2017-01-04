@@ -11,38 +11,16 @@
     tools:context="stem.cis3086.uom.stem.LoginActivity">
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/etPassword"
-        android:layout_below="@+id/etEmail"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:hint="Password"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:inputType="textPassword" />
-
-    <TextView
-        android:text="Welcome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvWelcome"
-        android:textSize="24sp"
-        android:textStyle="normal|bold"
-        android:layout_marginTop="147dp"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/bRegister"
-        android:layout_toStartOf="@+id/bRegister" />
-
-    <Button
-        android:text="Sign In"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/bRegister"
-        android:background="#388AFF"
-        android:layout_below="@+id/etPassword"
-        android:layout_centerHorizontal="true" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:id="@+id/etPassword"
+            android:layout_below="@+id/etEmail"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:layout_alignStart="@+id/etEmail"
+            android:gravity="start"
+            android:layout_alignParentEnd="true"/>
 
     <TextView
             android:text="Register Here"
@@ -55,17 +33,38 @@
             android:layout_alignEnd="@+id/bRegister"
             android:layout_alignLeft="@+id/bRegister"/>
 
-    <EditText
+    <Button
+        android:text="Sign In"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/etEmail"
-        android:hint="Email Address"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/bRegister"
+        android:background="#388AFF"
+        android:layout_below="@+id/etPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        style="@style/Widget.AppCompat.Button.Colored"/>
+
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/etEmail"
+            android:hint="Email Address"
+            android:layout_centerVertical="true"
+            android:gravity="start"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"/>
+
+    <TextView
+            android:text="Welcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvWelcome"
+            android:textSize="27sp"
+            android:textStyle="normal|bold"
+            android:layout_marginBottom="51dp"
+            android:layout_above="@+id/etEmail"
+            android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>
