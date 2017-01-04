@@ -1,5 +1,8 @@
 <component name="libraryTable">
   <library name="library-2.0.3">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.android/build-cache/95ca3d044734068a23e14b38a015b90ad572afa0/output/annotations.zip!/" />
+    </ANNOTATIONS>
     <CLASSES>
       <root url="jar://$USER_HOME$/.android/build-cache/95ca3d044734068a23e14b38a015b90ad572afa0/output/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.android/build-cache/95ca3d044734068a23e14b38a015b90ad572afa0/output/res" />

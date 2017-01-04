@@ -1,0 +1,376 @@
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/background"
+        android:animateLayoutChanges="true">
+
+        <!-- Short Description -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_gravity="center_vertical"
+                android:text="Short Description"
+                style="@style/HeaderText"/>
+
+            <ImageButton
+                android:id="@+id/lessonPlanShortDescriptionButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:padding="@dimen/spacing_small"/>
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/lessonPlanShortDescriptionWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"/>
+
+        <!-- Lesson Focus -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_gravity="center_vertical"
+                android:text="Focus"
+                style="@style/HeaderText"/>
+
+            <ImageButton
+                android:id="@+id/lessonPlanFocusButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:padding="@dimen/spacing_small"/>
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/lessonPlanFocusWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:visibility="gone"/>
+
+        <!-- Synopsis -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_gravity="center_vertical"
+                android:text="Synopsis"
+                style="@style/HeaderText"/>
+
+            <ImageButton
+                android:id="@+id/lessonPlanSynopsisButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:padding="@dimen/spacing_small"/>
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/lessonPlanSynopsisWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:visibility="gone"/>
+
+        <!-- Objectives -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_gravity="center_vertical"
+                android:text="Objectives"
+                style="@style/HeaderText"/>
+
+            <ImageButton
+                android:id="@+id/lessonPlanObjectivesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:padding="@dimen/spacing_small"/>
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/lessonPlanObjectivesWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:visibility="gone"/>
+
+        <!-- Learning Outcomes -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_gravity="center_vertical"
+                android:text="Learner Outcomes"
+                style="@style/HeaderText"/>
+
+            <ImageButton
+                android:id="@+id/lessonPlanLearningOutcomesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:padding="@dimen/spacing_small"/>
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/lessonPlanLearningOutcomessWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:visibility="gone"/>
+
+        <!-- Activities -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_gravity="center_vertical"
+                android:text="Activities"
+                style="@style/HeaderText"/>
+
+            <ImageButton
+                android:id="@+id/lessonPlanActivitiesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:padding="@dimen/spacing_small"/>
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/lessonPlanActivitiesWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:visibility="gone"/>
+
+        <!-- Alignment -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_gravity="center_vertical"
+                android:text="Alignment"
+                style="@style/HeaderText"/>
+
+            <ImageButton
+                android:id="@+id/lessonPlanAlignmentButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:padding="@dimen/spacing_small"/>
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/lessonPlanAlignmentWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:visibility="gone"/>
+
+        <!-- Recommended Reading -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_gravity="center_vertical"
+                android:text="Recommended Reading"
+                style="@style/HeaderText"/>
+
+            <ImageButton
+                android:id="@+id/lessonPlanRecommendedReadingButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:padding="@dimen/spacing_small"/>
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/lessonPlanRecommendedReadingWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:visibility="gone"/>
+
+        <!-- Optional Activities -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_gravity="center_vertical"
+                android:text="Optional Activities"
+                style="@style/HeaderText"/>
+
+            <ImageButton
+                android:id="@+id/lessonPlanOptionalActivitiesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:padding="@dimen/spacing_small"/>
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/lessonPlanOptionalActivitiesWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:visibility="gone"/>
+
+        <!-- Teacher Resources -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_gravity="center_vertical"
+                android:text="Teacher Resources"
+                style="@style/HeaderText"/>
+
+            <ImageButton
+                android:id="@+id/lessonPlanTeacherResourcesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:padding="@dimen/spacing_small"/>
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/lessonPlanTeacherResourcesWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:visibility="gone"/>
+
+        <!-- Student Notes -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_gravity="center_vertical"
+                android:text="Student Notes"
+                style="@style/HeaderText"/>
+
+            <ImageButton
+                android:id="@+id/lessonPlanStudentNotesButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:padding="@dimen/spacing_small"/>
+        </LinearLayout>
+
+        <WebView
+            android:id="@+id/lessonPlanStudentNotesWebView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_small"
+            android:layout_marginRight="@dimen/spacing_small"
+            android:visibility="gone"/>
+    </LinearLayout>
+</ScrollView>
