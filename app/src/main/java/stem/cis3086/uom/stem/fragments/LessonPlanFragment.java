@@ -18,12 +18,12 @@ import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
+import stem.cis3086.uom.stem.LessonDetailActivity;
 import stem.cis3086.uom.stem.R;
 
 public class LessonPlanFragment extends Fragment {
 
     private static final String ARG_ID = "argId";
-    private final String LESSON_PATH = "http://stemapp.azurewebsites.net/LessonPlans/GetLessonPlansById?id=";
     private String lessonId;
 
     private WebView shortDescriptionWebView;
@@ -108,16 +108,13 @@ public class LessonPlanFragment extends Fragment {
     }
 
     private void getData(){
-        String path = LESSON_PATH + lessonId;
+        String path = LessonDetailActivity.LESSON_PATH + lessonId;
         Ion.with(getActivity())
                 .load(path)
                 .asJsonArray()
                 .setCallback(new FutureCallback<JsonArray>() {
                     @Override
                     public void onCompleted(Exception e, JsonArray result) {
-
-                        // ShortDescription, LessonFocus, LessonSynopsis, Objectives, LearningOutcomes, LessonActivities, Aligment, RecommendedReading, OptionalActivities, TeacherResources, StudentNotes
-
                         // Get lesson plan from array
                         JsonObject lessonPlan = result.get(0).getAsJsonObject();
 

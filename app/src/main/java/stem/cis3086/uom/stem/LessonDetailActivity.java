@@ -15,6 +15,7 @@ import stem.cis3086.uom.stem.fragments.ScienceFragment;
 
 public class LessonDetailActivity extends AppCompatActivity {
 
+    public static final String LESSON_PATH = "http://stemapp.azurewebsites.net/LessonPlans/GetLessonPlansById?id=";
     private final String EXTRA_LESSON_ID = "extraLessonId";
     private String lessonId;
 
