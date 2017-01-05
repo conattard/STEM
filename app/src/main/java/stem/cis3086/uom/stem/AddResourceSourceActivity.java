@@ -6,6 +6,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -41,7 +42,7 @@ public class AddResourceSourceActivity extends AppCompatActivity {
 
     private Button submitButton;
     private Button selectLocationButton;
-    private TextView priceTextView;
+    private AppCompatEditText priceTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class AddResourceSourceActivity extends AppCompatActivity {
     private void findViews(){
         submitButton = (Button) findViewById(R.id.addSourceSubmitButton);
         selectLocationButton = (Button) findViewById(R.id.addSourceLocationButton);
-        priceTextView = (TextView) findViewById(R.id.addSourcePrice);
+        priceTextView = (AppCompatEditText) findViewById(R.id.addSourcePrice);
     }
 
     private void launchPlacePicker() {
@@ -136,10 +137,10 @@ public class AddResourceSourceActivity extends AppCompatActivity {
 
     private void submit(){
         // Validate source
-        String price = priceTextView.getText().toString();
+        String price = priceTextView.getText().toString().trim();
         boolean isValid = true;
 
-        if (price.trim().isEmpty()){
+        if (price.isEmpty()){
             isValid = false;
             priceTextView.setError("Price is required");
         }
