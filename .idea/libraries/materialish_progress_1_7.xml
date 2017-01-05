@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="materialish-progress-1.7">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.android/build-cache/a02bdd914df2f6b6a69318c70076c1d58a61a77a/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/a02bdd914df2f6b6a69318c70076c1d58a61a77a/output/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.pnikosis/materialish-progress/1.7/335976ecb055994235a9df5f23b5eda9038c8672/materialish-progress-1.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

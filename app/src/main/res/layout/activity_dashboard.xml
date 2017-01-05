@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        tools:context="com.example.stem_search.DashboardActivity2">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+            <!-- Beginning of top LPs textview and recycler view -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/topLPTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="TOP RATED LESSON PLANS"
+                android:textAlignment="center"
+                android:textColor="@color/stem_light_color"
+                android:textStyle="bold"
+                app:textAllCaps="true" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/top_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal">
+
+            </android.support.v7.widget.RecyclerView>
+            <!-- End of top LPs textview and recycler view -->
+
+            <!-- Beginning of science LPs textview and recycler view -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/scienceLPTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="LATEST LESSON PLANS"
+                android:textAlignment="center"
+                android:textColor="@color/stem_light_color"
+                android:textStyle="bold"
+                app:textAllCaps="true" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/science_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal">
+
+            </android.support.v7.widget.RecyclerView>
+            <!-- End of science LPs textview and recycler view -->
+
+            <!-- Beginning of technology LPs textview and recycler view -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/technologyLPTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="RECOMMENDED LESSON PLANS"
+                android:textAlignment="center"
+                android:textColor="@color/stem_light_color"
+                android:textStyle="bold"
+                app:textAllCaps="true" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/technology_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal">
+
+            </android.support.v7.widget.RecyclerView>
+            <!-- End of technology LPs textview and recycler view -->
+
+            <!-- Beginning of technology LPs textview and recycler view -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/engineeringLPTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="RANDOM PICKS"
+                android:textAlignment="center"
+                android:textColor="@color/stem_light_color"
+                android:textStyle="bold"
+                app:textAllCaps="true" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/engineering_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal">
+
+            </android.support.v7.widget.RecyclerView>
+            <!-- End of technology LPs textview and recycler view -->
+
+            <!-- Beginning of technology LPs textview and recycler view -->
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/mathLPTextView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="OUR PICKS"
+                android:textAlignment="center"
+                android:textColor="@color/stem_light_color"
+                android:textStyle="bold"
+                app:textAllCaps="true" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/math_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="horizontal">
+
+            </android.support.v7.widget.RecyclerView>
+            <!--  End of technology LPs textview and recycler view -->
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <ListView
+        android:id="@+id/left_drawer"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/colorPrimary" />
+
+</android.support.v4.widget.DrawerLayout>
+

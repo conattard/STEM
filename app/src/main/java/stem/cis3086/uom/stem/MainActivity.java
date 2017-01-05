@@ -1,14 +1,14 @@
 package stem.cis3086.uom.stem;
 
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.OptionalPendingResult;
-import com.google.android.gms.common.api.ResultCallback;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -20,24 +20,18 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
-
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
-import android.nfc.Tag;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-
-import android.telecom.Call;
-import android.util.Base64;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,8 +42,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 
@@ -242,7 +234,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             super.onPostExecute(aVoid);
             if(isGoogle){
                 if(isRegistered){
-                    Intent intent = new Intent(getApplicationContext(), ShareActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                     intent.putExtra("Google Account", acct);
                     intent.putExtra("email", email);
                     startActivity(intent);
@@ -256,7 +248,7 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             }
             else if (isFacebook){
                 if(isRegistered){
-                    Intent intent = new Intent(getApplicationContext(), ShareActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                     intent.putExtra("Facebook Account", data);
                     intent.putExtra("email", email);
                     startActivity(intent);
@@ -297,10 +289,12 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             } catch (IOException e){
                 e.printStackTrace();
             }
+
             if(chain.toString().equals("\"False\"")){
                 return true;
             }
             else{
+
                 return false;
             }
         }

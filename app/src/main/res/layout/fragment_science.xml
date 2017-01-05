@@ -1,0 +1,31 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/background"
+    tools:context="stem.cis3086.uom.stem.fragments.LessonPlanFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/scienceRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+    <TextView
+        android:id="@+id/scienceHelperText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="No posts available"
+        style="@style/TextBody"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/scienceAddPostFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/spacing_normal"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/ic_plus_white_48dp"
+        app:backgroundTint="@color/colorPrimary" />
+</FrameLayout>

@@ -123,7 +123,7 @@
                                 android:ellipsize="end"
                                 android:maxLines="5"
                                 android:textSize="16sp"
-                                android:text="Marsa, Malta"/>
+                                android:text="Malta"/>
                     </LinearLayout>
                 </LinearLayout>
 
