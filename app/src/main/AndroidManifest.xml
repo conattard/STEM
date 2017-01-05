@@ -67,12 +67,15 @@
         </activity>
         <activity
             android:name=".ResourceSourcesActivity"
-            android:theme="@style/NoActionBarTheme"></activity>
+            android:theme="@style/NoActionBarTheme" />
         <activity
             android:name=".AddResourceSourceActivity"
-            android:theme="@style/NoActionBarTheme"></activity>
+            android:theme="@style/NoActionBarTheme" />
         <activity
             android:name=".AddPostActivity"
+            android:theme="@style/NoActionBarTheme" />
+        <activity
+            android:name=".CommentsActivity"
             android:theme="@style/NoActionBarTheme"></activity>
     </application>
 

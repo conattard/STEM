@@ -1,6 +1,5 @@
 package stem.cis3086.uom.stem.fragments;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,10 +7,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,9 +21,8 @@ import com.koushikdutta.ion.Ion;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import stem.cis3086.uom.stem.AddPostActivity;
-import stem.cis3086.uom.stem.AddResourceSourceActivity;
+import stem.cis3086.uom.stem.CommentsActivity;
 import stem.cis3086.uom.stem.R;
-import stem.cis3086.uom.stem.ResourceSourcesActivity;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -149,11 +147,12 @@ public class ScienceFragment extends Fragment {
             private TextView titleTextView;
             private TextView descriptionTextView;
             private ImageView imageView;
-
+            private ImageButton commentsButton;
 
             private PostViewHolder(View itemView) {
                 super(itemView);
 
+                commentsButton = (ImageButton) itemView.findViewById(R.id.postCommentsButton);
                 authorImageView = (CircleImageView) itemView.findViewById(R.id.postAuthorImageView);
                 authorNameTextView = (TextView) itemView.findViewById(R.id.postAuthorName);
                 dateTextView = (TextView) itemView.findViewById(R.id.postDate);
@@ -162,7 +161,18 @@ public class ScienceFragment extends Fragment {
                 imageView = (ImageView) itemView.findViewById(R.id.postThumbnailImageView);
             }
 
-            private void bind(JsonObject source) {
+            private void bind(final JsonObject source) {
+                // Set comment click handler
+                commentsButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String id = source.get("Id").getAsString();
+                        Intent intent = new Intent(getActivity(), CommentsActivity.class);
+                        intent.putExtra(CommentsActivity.EXTRA_POST_ID, id);
+                        startActivity(intent);
+                    }
+                });
+
                 // Get user data
                 authorNameTextView.setText("Tony Stark");
                 dateTextView.setText("1 day ago");
@@ -173,8 +183,6 @@ public class ScienceFragment extends Fragment {
                 final String mediaUrl = source.get("MediaUrl").getAsString();
                 final String videoId = mediaUrl.substring(mediaUrl.indexOf("=") + 1);
                 final String thumbnailUrl = "https://img.youtube.com/vi/" + videoId + "/maxresdefault.jpg";
-
-                Log.d("TEST", "Full: " + mediaUrl + "\nVideo id: " + videoId + "\nThumbnail: " + thumbnailUrl);
 
                 Ion.with(imageView)
                         .placeholder(R.drawable.loading_resources_placeholder)
