@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#4180CA</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white">#fff</color>
+    <color name="stem_light_color">#4990e2</color>
 </resources>

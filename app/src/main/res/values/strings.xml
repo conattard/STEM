@@ -3,4 +3,9 @@
 
     <string name="facebook_app_id">1828563664092280</string>
     <string name="fb_login_protocol_scheme">fb1828563664092280</string>
+    <string name="search_title">Search</string>
+    <string name="search_image_view_string">Search Image</string>
+    <string name="search_hint">Tap here to start searching</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
 </resources>

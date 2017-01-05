@@ -7,13 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.android.volley.Response;
-import com.android.volley.toolbox.StringRequest;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by YranRiahi on 30/11/2016.
@@ -30,7 +25,7 @@ public class RegisterRequest extends AppCompatActivity
         submitBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ShareActivity.class);
+                Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                 startActivity(intent);
                 finish();
             }
