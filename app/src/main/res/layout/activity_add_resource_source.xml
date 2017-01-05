@@ -1,10 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_add_resource_source"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="stem.cis3086.uom.stem.AddResourceSourceActivity">
+    android:background="@color/background"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <!-- Toolbar -->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/addSourceToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:elevation="4dp"
+        app:title="Submit resource">
+
+        <Button
+            android:id="@+id/addSourceSubmitButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|right"
+            android:background="@null"
+            android:text="Submit" />
+
+    </android.support.v7.widget.Toolbar>
+
+    <!-- Location button -->
+    <Button
+        android:id="@+id/addSourceLocationButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="@dimen/spacing_large"
+        android:text="Set location"
+        android:textColor="@color/white" />
+
+    <!-- Items -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/addSourceLocationButton"
+        android:layout_below="@id/addSourceToolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginLeft="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_gravity="center_vertical"
+                    android:text="€"
+                    style="@style/TextBody"/>
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/addSourcePrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_small"
+                    android:layout_marginLeft="@dimen/spacing_small"
+                    android:layout_marginRight="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:layout_gravity="center_vertical"
+                    android:hint="Price"
+                    android:inputType="numberDecimal"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

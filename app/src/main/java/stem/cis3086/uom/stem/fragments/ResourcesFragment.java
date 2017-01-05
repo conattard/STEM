@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,13 +37,18 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
+import stem.cis3086.uom.stem.AddResourceSourceActivity;
 import stem.cis3086.uom.stem.LessonDetailActivity;
 import stem.cis3086.uom.stem.R;
 import stem.cis3086.uom.stem.ResourceSourcesActivity;
 
+import static android.app.Activity.RESULT_OK;
+
 public class ResourcesFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private static final String ARG_ID = "argId";
+    private static final int REQUEST_ADD_SOURCE = 10;
+
     private String lessonId;
     private GoogleApiClient googleApiClient;
     private Location currentLocation;
@@ -75,6 +81,8 @@ public class ResourcesFragment extends Fragment implements GoogleApiClient.Conne
                 .addOnConnectionFailedListener(ResourcesFragment.this)
                 .addApi(LocationServices.API)
                 .build();
+
+        googleApiClient.connect();
     }
 
     @Override
@@ -160,7 +168,7 @@ public class ResourcesFragment extends Fragment implements GoogleApiClient.Conne
                                 .build()
                                 .show();
                     }
-                });
+                }).check();
     }
 
     @Override
@@ -177,6 +185,14 @@ public class ResourcesFragment extends Fragment implements GoogleApiClient.Conne
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_ADD_SOURCE && resultCode == RESULT_OK){
+            getData();
+        }
     }
 
     private class ResourcesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
@@ -206,8 +222,6 @@ public class ResourcesFragment extends Fragment implements GoogleApiClient.Conne
 
         private class ResourceViewHolder extends RecyclerView.ViewHolder{
 
-            private String resourceId = null;
-
             private TextView titleTextView;
             private TextView isStudentTextView;
             private TextView submissionCountTextView;
@@ -226,20 +240,11 @@ public class ResourcesFragment extends Fragment implements GoogleApiClient.Conne
                 allSubmissionsButtonTextView = (TextView) itemView.findViewById(R.id.resourceItemAllSubmissions);
                 mapImageView = (ImageView) itemView.findViewById(R.id.resourceItemMapView);
 
-                // Set click handler
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (resourceId != null) {
-                            Intent intent = new Intent(getActivity(), ResourceSourcesActivity.class);
-                            startActivity(intent);
-                        }
-                    }
-                });
+
             }
 
             private void bind(JsonObject resource){
-                resourceId = String.valueOf(resource.get("Id").getAsInt());
+                final String resourceId = String.valueOf(resource.get("Id").getAsInt());
 
                 // Set data
                 JsonArray resourceSources = resource.getAsJsonArray("ResourceSources");
@@ -252,18 +257,52 @@ public class ResourcesFragment extends Fragment implements GoogleApiClient.Conne
                     allSubmissionsButtonTextView.setVisibility(View.GONE);
                     nearestLocationButtonTextView.setText("Submit resource");
                     mapImageView.setImageResource(R.drawable.no_resources_error);
+
+                    // Set onclick handler
+                    nearestLocationButtonTextView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (resourceId != null) {
+                                Intent intent = new Intent(getActivity(), AddResourceSourceActivity.class);
+                                startActivityForResult(intent, REQUEST_ADD_SOURCE);
+                            }
+                        }
+                    });
                 } else  {
+                    // Get nearest resource
+                    JsonObject nearestResource = getNearestResource(resourceSources);
+                    final double latitude = nearestResource.get("Latitude").getAsDouble();
+                    final double longitude = nearestResource.get("Logitude").getAsDouble();
+
                     // Update buttons
                     allSubmissionsButtonTextView.setVisibility(View.VISIBLE);
                     nearestLocationButtonTextView.setText("Nearest location");
 
+                    nearestLocationButtonTextView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latitude + "," + longitude);
+                            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                            mapIntent.setPackage("com.google.android.apps.maps");
+                            if (mapIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+                                startActivity(mapIntent);
+                            }
+                        }
+                    });
+
+                    // Set onclick handler
+                    allSubmissionsButtonTextView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (resourceId != null) {
+                                Intent intent = new Intent(getActivity(), ResourceSourcesActivity.class);
+                                startActivity(intent);
+                            }
+                        }
+                    });
+
                     // Load map for nearest resource using Static Maps API
-                    JsonObject nearestResource = getNearestResource(resourceSources);
-                    double latitude = nearestResource.get("sourceLatitude").getAsDouble();
-                    double longitude = nearestResource.get("sourceLongitude").getAsDouble();
-
                     StringBuilder stringBuilder = new StringBuilder("");
-
                     stringBuilder.append("https://maps.googleapis.com/maps/api/staticmap?center=");
                     stringBuilder.append(latitude);
                     stringBuilder.append(",");
@@ -285,23 +324,23 @@ public class ResourcesFragment extends Fragment implements GoogleApiClient.Conne
             private JsonObject getNearestResource(JsonArray resourceSources){
                 JsonObject nearest = null;
                 for (int i = 0; i < resourceSources.size(); i++){
-                    JsonObject resource = resourceSources.get(i).getAsJsonObject();
-                    if (distanceToResource(resource) < distanceToResource(nearest) || nearest == null){
-                        nearest = resource;
+                    JsonObject source = resourceSources.get(i).getAsJsonObject();
+                    if (nearest == null || distanceToResource(source) < distanceToResource(nearest)){
+                        nearest = source;
                     }
                 }
                 return  nearest;
             }
 
-            private double distanceToResource(JsonObject resource){
+            private double distanceToResource(JsonObject source){
                 // Return if current location is not found
                 if (currentLocation == null){
                     return Double.MAX_VALUE;
                 }
 
                 // Create resource location
-                double latitude = resource.get("sourceLatitude").getAsDouble();
-                double longitude = resource.get("sourceLongitude").getAsDouble();
+                double latitude = source.get("Latitude").getAsDouble();
+                double longitude = source.get("Logitude").getAsDouble();
                 Location resourceLocation = new Location(LocationManager.GPS_PROVIDER);
                 resourceLocation.setLatitude(latitude);
                 resourceLocation.setLongitude(longitude);

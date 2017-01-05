@@ -1,7 +1,10 @@
 package stem.cis3086.uom.stem;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,11 +26,13 @@ import com.koushikdutta.ion.Ion;
  */
 public class ResourceSourcesActivity extends AppCompatActivity {
 
+    public static final int REQUEST_ADD_SOURCE = 10;
     public static final String EXTRA_RESOURCE_ID = "extraId";
     private String resourceId;
 
     private Toolbar toolbar;
     private RecyclerView recyclerView;
+    private FloatingActionButton fab;
 
     public ResourceSourcesActivity() {
         // Required empty public constructor
@@ -36,6 +41,7 @@ public class ResourceSourcesActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_resource_sources);
 
         // Get id
         if (getIntent().hasExtra(EXTRA_RESOURCE_ID)){
@@ -44,14 +50,46 @@ public class ResourceSourcesActivity extends AppCompatActivity {
             resourceId = "4";
         }
 
+        // Find views
         findViews();
+
+        // Get data
         getData();
+
+        // Setup FAB
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ResourceSourcesActivity.this, AddResourceSourceActivity.class);
+                startActivityForResult(intent, REQUEST_ADD_SOURCE);
+            }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy){
+                if (dy > 0)
+                    fab.hide();
+                else if (dy < 0)
+                    fab.show();
+            }
+        });
+
+        // Setup toolbar
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_left_white_24dp);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 
     private void findViews() {
         toolbar = (Toolbar) findViewById(R.id.resourceSourcesToolbar);
         recyclerView = (RecyclerView) findViewById(R.id.resourceSourcesRecyclerView);
+        fab = (FloatingActionButton) findViewById(R.id.resourceSourcesAddFab);
     }
 
     private void getData() {
@@ -78,6 +116,14 @@ public class ResourceSourcesActivity extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_ADD_SOURCE && resultCode == RESULT_OK){
+            getData();
+        }
+    }
+
     private class SourcesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         private JsonArray sourcesJsonArray;
@@ -88,7 +134,7 @@ public class ResourceSourcesActivity extends AppCompatActivity {
 
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new SourceViewHolder(LayoutInflater.from(ResourceSourcesActivity.this).inflate(R.layout.view_resource_item, parent, false));
+            return new SourceViewHolder(LayoutInflater.from(ResourceSourcesActivity.this).inflate(R.layout.view_resource_source_item, parent, false));
         }
 
         @Override
@@ -119,18 +165,19 @@ public class ResourceSourcesActivity extends AppCompatActivity {
                 dateTextView = (TextView) itemView.findViewById(R.id.resourceSourceDate);
                 descriptionTextView = (TextView) itemView.findViewById(R.id.resourceSourceDescription);
                 addressTextView = (TextView) itemView.findViewById(R.id.resourceSourceAddress);
-                mapImageView = (ImageView) itemView.findViewById(R.id.resourceItemMapView);
+                mapImageView = (ImageView) itemView.findViewById(R.id.resourceSourceMapView);
             }
 
             private void bind(JsonObject source) {
                 // Get user data
                 nameTextView.setText("Tony Stark");
                 dateTextView.setText("1 day ago");
-                descriptionTextView.setText("€40");
+                addressTextView.setText(source.get("Name").getAsString());
+                descriptionTextView.setText(source.get("Description").getAsString());
 
                 // Load map for nearest resource using Static Maps API
-                double latitude = source.get("sourceLatitude").getAsDouble();
-                double longitude = source.get("sourceLongitude").getAsDouble();
+                final double latitude = source.get("Latitude").getAsDouble();
+                final double longitude = source.get("Logitude").getAsDouble();
 
                 StringBuilder stringBuilder = new StringBuilder("");
 
@@ -144,11 +191,23 @@ public class ResourceSourcesActivity extends AppCompatActivity {
                 stringBuilder.append(longitude);
                 stringBuilder.append("&size=1000x500&key=AIzaSyBcI5WQUbu83dPwYLleKv9dur22-qkcHvI");
 
-                //"https://maps.googleapis.com/maps/api/staticmap?center=35.891746,14.442517&zoom=12&markers=color:red%7Clabel:S%7C35.891746,14.442517&size=1000x500&key=AIzaSyBcI5WQUbu83dPwYLleKv9dur22-qkcHvI";
                 Ion.with(mapImageView)
                         .placeholder(R.drawable.loading_resources_placeholder)
                         .error(R.drawable.no_resources_error)
                         .load(stringBuilder.toString());
+
+                // Open navigation on click
+                mapImageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latitude + "," + longitude);
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        mapIntent.setPackage("com.google.android.apps.maps");
+                        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                            startActivity(mapIntent);
+                        }
+                    }
+                });
             }
         }
     }

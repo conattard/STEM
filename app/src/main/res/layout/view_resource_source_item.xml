@@ -6,26 +6,60 @@
     android:layout_height="wrap_content"
     android:background="@color/cardBackground">
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/resourceSourceName"
-        android:layout_width="wrap_content"
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/spacing_normal"
-        android:layout_marginRight="@dimen/spacing_normal"
-        android:layout_marginTop="@dimen/spacing_normal"
-        android:textStyle="bold"
-        style="@style/TextBody"/>
+        android:orientation="horizontal">
 
-    <!-- Date  -->
-    <TextView
-        android:id="@+id/resourceSourceDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/spacing_normal"
-        android:layout_marginRight="@dimen/spacing_normal"
-        android:layout_marginBottom="@dimen/spacing_normal"
-        style="@style/TextBody"/>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:src="@color/grey_light"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/spacing_large"
+            android:layout_marginBottom="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:orientation="vertical">
+
+            <!-- Title -->
+            <TextView
+                android:id="@+id/resourceSourceName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                style="@style/TextBody"/>
+
+            <!-- Date  -->
+            <TextView
+                android:id="@+id/resourceSourceDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextBody"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="@dimen/spacing_large"
+            android:background="@null"
+            android:src="@drawable/ic_share_variant_grey600_24dp"/>
+    </LinearLayout>
 
     <!-- Google Static Map API image view -->
     <ImageView
@@ -46,8 +80,6 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimary"
             android:padding="@dimen/spacing_large"
             style="@style/TextBody"/>
 
@@ -62,4 +94,11 @@
             android:padding="@dimen/spacing_large"
             style="@style/TextBody"/>
     </LinearLayout>
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey_light"
+        android:alpha=".5"/>
 </LinearLayout>

@@ -20,6 +20,10 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyC3dW0HBFd6c5Cj_GjAgCK76ppZBXjN6DE" />
+
         <activity android:name=".MainActivity">
 
             <!-- <intent-filter> -->
@@ -62,7 +66,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddResourceSourceActivity"></activity>
+        <activity
+            android:name=".ResourceSourcesActivity"
+            android:theme="@style/NoActionBarTheme">
+
+        </activity>
+        <activity
+            android:name=".AddResourceSourceActivity"
+            android:theme="@style/NoActionBarTheme">
+        </activity>
     </application>
 
 </manifest>
