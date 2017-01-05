@@ -29,6 +29,9 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -286,10 +289,12 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             } catch (IOException e){
                 e.printStackTrace();
             }
+
             if(chain.toString().equals("\"False\"")){
                 return true;
             }
             else{
+
                 return false;
             }
         }

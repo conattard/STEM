@@ -3,6 +3,7 @@ package stem.cis3086.uom.stem;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -187,10 +188,11 @@ public class DashboardActivity extends AppCompatActivity {
     public void setUpDrawer(){
         try {
             optionsArray = new ArrayList<String>();
-            optionsArray.add("Account");
+            //optionsArray.add("Account");
             optionsArray.add("View all lesson plans");
-            optionsArray.add("options");
-            optionsArray.add("Settings");
+            //optionsArray.add("options");
+            //optionsArray.add("Settings");
+
             mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
             mListView = (ListView) findViewById(R.id.left_drawer);
 
@@ -199,7 +201,12 @@ public class DashboardActivity extends AppCompatActivity {
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Toast.makeText(DashboardActivity.this, "Touched item at position: " + position, Toast.LENGTH_SHORT).show();
+                    switch (position) {
+                        case 0:
+                            Intent intent = new Intent(DashboardActivity.this, ListAllLessonPlansActivity.class);
+                            startActivity(intent);
+                            break;
+                    }
                 }
             });
 

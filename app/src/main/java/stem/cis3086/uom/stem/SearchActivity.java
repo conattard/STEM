@@ -148,6 +148,13 @@ public class SearchActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         WriteToFile(filename, newArray);
+
+                        // Launch post detail
+                        LessonPlans clicked = ((LessonPlans) listView.getItemAtPosition(position));
+                        String lessonId = String.valueOf(clicked.getId());
+                        Intent intent = new Intent(SearchActivity.this, LessonDetailActivity.class);
+                        intent.putExtra(LessonDetailActivity.EXTRA_LESSON_ID, lessonId);
+                        startActivity(intent);
                     }
                 });
             }

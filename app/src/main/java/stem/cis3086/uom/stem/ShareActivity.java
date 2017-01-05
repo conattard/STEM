@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -46,6 +47,15 @@ public class ShareActivity extends AppCompatActivity {
     private String[] socialMediaOptions = new String[]{"Facebook", "Google+", "Twitter"};
     private MaterialBetterSpinner spinner;
     private static final String TAG = "ShareAcitivity";
+    public static final String EXTRA_LONGITUDE = "longitude";
+    public static final String EXTRA_LATITUDE = "latitude";
+    public static final String EXTRA_RESOURCE_NAME = "resource";
+    public static final String EXTRA_ADDRESS = "address";
+
+    private float latitude;
+    private float longitude;
+    private String name;
+    private String address;
 
     private EditText editText;
 
@@ -53,6 +63,12 @@ public class ShareActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
+
+        Bundle extras = getIntent().getExtras();
+        name = extras.getString(EXTRA_RESOURCE_NAME);
+        address = extras.getString(EXTRA_ADDRESS);
+        latitude = Float.valueOf(extras.getFloat(EXTRA_LATITUDE));
+        longitude = Float.valueOf(extras.getFloat(EXTRA_LONGITUDE));
 
         //Toolbar customization
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
@@ -73,6 +89,11 @@ public class ShareActivity extends AppCompatActivity {
 
         //Set Edit Text
         editText = (EditText) findViewById(R.id.content);
+        editText.setText(name);
+
+
+        TextView addressEditText = (TextView) findViewById(R.id.title);
+        addressEditText.setText(address);
     }
 
     @Override
@@ -104,13 +125,16 @@ public class ShareActivity extends AppCompatActivity {
 
     //Sends a post to the social platform selected
     private void sendPost(){
-        Bundle extras = getIntent().getExtras();
+        // Update name
+        editText = (EditText) findViewById(R.id.content);
+        name = editText.getText().toString();
+
         switch (spinner.getText().toString()){
             case "Facebook":
-                postOnFacebook(extras.getString("resourcesType"), Float.valueOf(extras.getFloat("latitude")), Float.valueOf(extras.getFloat("longitude")));
+                postOnFacebook(name, latitude, longitude);
                 break;
             case "Google+":
-                postOnGoogle(extras.getString("resourcesType"), Float.valueOf(extras.getFloat("latitude")), Float.valueOf(extras.getFloat("longitude")));
+                postOnGoogle(name, latitude, longitude);
                 break;
             default: finish();
         }

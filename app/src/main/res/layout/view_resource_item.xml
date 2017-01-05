@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_normal"
+    android:background="@color/cardBackground">
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/resourceItemTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_normal"
+        android:layout_marginRight="@dimen/spacing_normal"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:textStyle="bold"
+        style="@style/TextBody"/>
+
+    <!-- Is student -->
+    <TextView
+        android:id="@+id/resourceItemIsStudent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_normal"
+        android:layout_marginRight="@dimen/spacing_normal"
+        android:textAllCaps="true"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/font_small"
+        style="@style/TextBody"/>
+
+    <!-- Submissions count -->
+    <TextView
+        android:id="@+id/resourceItemSubmissions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_normal"
+        android:layout_marginRight="@dimen/spacing_normal"
+        android:layout_marginBottom="@dimen/spacing_normal"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/font_small"
+        style="@style/TextBody"/>
+
+    <!-- Google Static Map API image view -->
+    <ImageView
+        android:id="@+id/resourceItemMapView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop" />
+
+    <!-- Bottom buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/resourceItemNearestLocation"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimary"
+            android:padding="@dimen/spacing_large"
+            style="@style/TextBody"/>
+
+        <TextView
+            android:id="@+id/resourceItemAllSubmissions"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textColor="@color/grey_light"
+            android:padding="@dimen/spacing_large"
+            android:text="All locations"
+            style="@style/TextBody"/>
+    </LinearLayout>
+
+
+    <!-- Divider -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey_light"
+        android:alpha=".5"/>
+</LinearLayout>

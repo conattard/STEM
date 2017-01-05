@@ -1,6 +1,7 @@
 package stem.cis3086.uom.stem;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
@@ -78,15 +79,8 @@ public class RecyclerViewImagesAdapter extends RecyclerView.Adapter<RecyclerView
             if(urlsArrayList!=null) {
                 Bitmap bitmap = getBitmapFromURL(urlsArrayList.get(position));
 
-
                 if (bitmap != null) {
                     ((ImageViewHolder) holder).imageView.setImageBitmap(bitmap);
-                    ((ImageViewHolder) holder).imageView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(mContext, "clicked picture in position: " + (position + 1), Toast.LENGTH_SHORT).show();
-                        }
-                    });
                 }
             }
         }
@@ -99,8 +93,20 @@ public class RecyclerViewImagesAdapter extends RecyclerView.Adapter<RecyclerView
 
     public class ImageViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
+
         private ImageViewHolder(View view){
             super(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Open Lesson plan detail
+                    String lessonId = String.valueOf(lessonPlans.get(getAdapterPosition()).getId());
+                    Intent intent = new Intent(mContext, LessonDetailActivity.class);
+                    intent.putExtra(LessonDetailActivity.EXTRA_LESSON_ID, lessonId);
+                    mContext.startActivity(intent);
+                }
+            });
+
             imageView = (ImageView)view.findViewById(R.id.recyclerImage);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }

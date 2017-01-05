@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +22,8 @@ import java.net.URL;
 
 public class LoginActivity extends AppCompatActivity
 {
-    private String url = "http://stemapp.azurewebsites.net/Account/CheckPassword?username=";
+    private final String URL = "http://stemapp.azurewebsites.net/Account/CheckPassword?username=";
+    private String loginUrl;
     private boolean isSuccessful = false;
 
     @Override
@@ -58,7 +60,7 @@ public class LoginActivity extends AppCompatActivity
                 final String username = etUsername.getText().toString();
                 final String password = etPassword.getText().toString();
 
-                url = url + username + "&password=" + password;
+                loginUrl = URL + username + "&password=" + password;
                 new LoginActivity.sendJsonData().execute();
             }
         });
@@ -87,11 +89,12 @@ public class LoginActivity extends AppCompatActivity
 
         @Override
         protected Void doInBackground(Void... params) {
-            RegisterActivity.ServiceHandler serviceHandler = new RegisterActivity.ServiceHandler();
+            LoginActivity.ServiceHandler serviceHandler = new LoginActivity.ServiceHandler();
 
-            String jsonString = serviceHandler.makeServiceCall(url);
-            if (jsonString.equals("\"True\"")){
+            String jsonString = serviceHandler.makeServiceCall(loginUrl);
+            if (!jsonString.equals("\"False\"")){
                 isSuccessful = true;
+                STEM.userId = jsonString.substring(1, jsonString.length() - 1);
             }
             return null;
         }

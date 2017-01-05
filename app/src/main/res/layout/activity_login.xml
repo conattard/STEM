@@ -20,7 +20,8 @@
             android:inputType="textPassword"
             android:layout_alignStart="@+id/etEmail"
             android:gravity="start"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true"
+            android:text="passW0rd!"/>
 
     <TextView
             android:text="Register Here"
@@ -54,7 +55,8 @@
             android:layout_centerVertical="true"
             android:gravity="start"
             android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true"
+            android:text="daniel.gauci@gmail.com"/>
 
     <TextView
             android:text="Welcome"

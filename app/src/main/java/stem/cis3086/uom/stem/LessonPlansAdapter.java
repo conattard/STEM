@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.koushikdutta.ion.Ion;
+
 import java.util.ArrayList;
 
 /**
@@ -62,8 +64,11 @@ public class LessonPlansAdapter extends BaseAdapter {
         }
 
         LessonPlans lessonPlans = lessonPlansArrayList.get(position);
-        lessonplanHolder.imageView.setImageBitmap(helperClass.getBitmapFromURL(lessonPlans.getThumbnailUrl()));
         lessonplanHolder.textView.setText(lessonPlans.getName());
+
+        // Load image
+        Ion.with(lessonplanHolder.imageView)
+                .load(lessonPlans.getThumbnailUrl());
 
         return convertView;
 
