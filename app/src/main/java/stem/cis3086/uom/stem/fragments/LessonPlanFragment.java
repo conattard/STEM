@@ -12,12 +12,15 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.pnikosis.materialishprogress.ProgressWheel;
 
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import stem.cis3086.uom.stem.LessonDetailActivity;
 import stem.cis3086.uom.stem.R;
 
@@ -26,6 +29,8 @@ public class LessonPlanFragment extends Fragment {
     private static final String ARG_ID = "argId";
     private String lessonId;
 
+    private ProgressWheel progressWheel;
+    private ScrollView scrollView;
     private WebView shortDescriptionWebView;
     private WebView focusWebView;
     private WebView synopsisWebView;
@@ -82,6 +87,8 @@ public class LessonPlanFragment extends Fragment {
     }
 
     private void findViews(View view){
+        progressWheel = (ProgressWheel) view.findViewById(R.id.lessonPlanProgressWheel);
+        scrollView = (ScrollView) view.findViewById(R.id.lessonPlanScrollView);
         shortDescriptionWebView = (WebView) view.findViewById(R.id.lessonPlanShortDescriptionWebView);
         focusWebView = (WebView) view.findViewById(R.id.lessonPlanFocusWebView);
         synopsisWebView = (WebView) view.findViewById(R.id.lessonPlanSynopsisWebView);
@@ -108,6 +115,11 @@ public class LessonPlanFragment extends Fragment {
     }
 
     private void getData(){
+        // Show progress wheel
+        progressWheel.setVisibility(View.VISIBLE);
+        scrollView.setVisibility(View.GONE);
+
+        // Get data
         String path = LessonDetailActivity.LESSON_PATH + lessonId;
         Ion.with(getActivity())
                 .load(path)
@@ -151,6 +163,10 @@ public class LessonPlanFragment extends Fragment {
 
                         String studentNotesHtml = lessonPlan.get("StudentNotes").getAsString();
                         setupWebView(studentNotesWebView, studentNotesCollapseButton, studentNotesHtml);
+
+                        // Hide progress wheel
+                        progressWheel.setVisibility(View.GONE);
+                        scrollView.setVisibility(View.VISIBLE);
                     }
                 });
     }
